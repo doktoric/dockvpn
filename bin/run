@@ -16,12 +16,13 @@ chmod 600 key.pem
     openssl req -new -key key.pem -out csr.pem -subj /CN=OpenVPN/
 [ -f cert.pem ] ||
     openssl x509 -req -in csr.pem -out cert.pem -signkey key.pem -days 24855
-    
+
 [ -f ta.key ] ||
     openvpn --genkey --secret ta.key
 
 [ -f tcp443.conf ] || cat >tcp443.conf <<EOF
 server 192.167.255.0 255.255.255.128
+auth none
 verb 3
 duplicate-cn
 key key.pem
@@ -42,6 +43,7 @@ EOF
 
 [ -f udp1194.conf ] || cat >udp1194.conf <<EOF
 server 192.167.255.128 255.255.255.128
+auth none
 verb 3
 duplicate-cn
 key key.pem
@@ -72,6 +74,7 @@ client
 nobind
 dev tun
 redirect-gateway def1
+auth none
 
 <key>
 `cat key.pem`

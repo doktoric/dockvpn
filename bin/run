@@ -35,7 +35,7 @@ persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
 
-cipher AES-256-CBC
+cipher none
 comp-lzo yes
 
 proto tcp-server
@@ -59,7 +59,7 @@ persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
 
-cipher AES-256-CBC
+cipher none
 comp-lzo yes
 
 proto udp
@@ -82,7 +82,7 @@ dev tun
 redirect-gateway def1
 auth none
 
-cipher AES-256-CBC
+cipher none
 comp-lzo yes
 
 <key>

@@ -36,6 +36,7 @@ push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
 
 cipher AES-256-CBC
+comp-lzo yes
 
 proto tcp-server
 port 443
@@ -59,6 +60,7 @@ push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
 
 cipher AES-256-CBC
+comp-lzo yes
 
 proto udp
 port 1194
@@ -81,6 +83,7 @@ redirect-gateway def1
 auth none
 
 cipher AES-256-CBC
+comp-lzo yes
 
 <key>
 `cat key.pem`

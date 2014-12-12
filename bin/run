@@ -17,20 +17,24 @@ chmod 600 key.pem
 [ -f cert.pem ] ||
     openssl x509 -req -in csr.pem -out cert.pem -signkey key.pem -days 24855
 
+[ -f ta.key ] ||
+    openvpn --genkey --secret ta.key
+
 [ -f tcp443.conf ] || cat >tcp443.conf <<EOF
 server 192.168.255.0 255.255.255.128
 verb 3
 duplicate-cn
-key /etc/openvpn/key.pem
-ca /etc/openvpn/cert.pem
-cert /etc/openvpn/cert.pem
-dh /etc/openvpn/dh.pem
+key key.pem
+ca cert.pem
+cert cert.pem
+dh dh.pem
 keepalive 10 60
 persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
-tls-auth key.pem 0
+tls-server
+tls-auth ta.key 0
 
 proto tcp-server
 port 443
@@ -42,16 +46,17 @@ EOF
 server 192.168.255.128 255.255.255.128
 verb 3
 duplicate-cn
-key /etc/openvpn/key.pem
-ca /etc/openvpn/cert.pem
-cert /etc/openvpn/cert.pem
-dh /etc/openvpn/dh.pem
+key key.pem
+ca cert.pem
+cert cert.pem
+dh dh.pem
 keepalive 10 60
 persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
-tls-auth /etc/openvpn/key.pem 0
+tls-server
+tls-auth ta.key 0
 
 proto udp
 port 1194
@@ -72,10 +77,12 @@ nobind
 dev tun
 redirect-gateway def1
 
+tls-client
+
 ca [inline]
 cert [inline]
 key [inline]
-ta [inline]
+ta [inline] 1
 
 <key>
 `cat key.pem`
@@ -90,7 +97,7 @@ ta [inline]
 `cat dh.pem`
 </dh>
 <ta>
-`cat key.pem`
+`cat ta.key`
 </ta>
 
 <connection>

@@ -21,15 +21,16 @@ chmod 600 key.pem
 server 192.168.255.0 255.255.255.128
 verb 3
 duplicate-cn
-key key.pem
-ca cert.pem
-cert cert.pem
-dh dh.pem
+key /etc/openvpn/key.pem
+ca /etc/openvpn/cert.pem
+cert /etc/openvpn/cert.pem
+dh /etc/openvpn/dh.pem
 keepalive 10 60
 persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
+tls-auth none
 
 proto tcp-server
 port 443
@@ -41,15 +42,16 @@ EOF
 server 192.168.255.128 255.255.255.128
 verb 3
 duplicate-cn
-key key.pem
-ca cert.pem
-cert cert.pem
-dh dh.pem
+key /etc/openvpn/key.pem
+ca /etc/openvpn/cert.pem
+cert /etc/openvpn/cert.pem
+dh /etc/openvpn/dh.pem
 keepalive 10 60
 persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
+tls-auth none
 
 proto udp
 port 1194
@@ -69,6 +71,7 @@ client
 nobind
 dev tun
 redirect-gateway def1
+tls-auth none
 
 <key>
 `cat key.pem`

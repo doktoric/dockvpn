@@ -30,7 +30,7 @@ persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
-tls-auth none
+tls-auth key.pem 0
 
 proto tcp-server
 port 443
@@ -51,7 +51,7 @@ persist-key
 persist-tun
 push "dhcp-option DNS 8.8.8.8"
 push "dhcp-option DNS 8.8.4.4"
-tls-auth none
+tls-auth /etc/openvpn/key.pem 0
 
 proto udp
 port 1194
@@ -71,7 +71,11 @@ client
 nobind
 dev tun
 redirect-gateway def1
-tls-auth none
+
+ca [inline]
+cert [inline]
+key [inline]
+ta [inline]
 
 <key>
 `cat key.pem`
@@ -85,6 +89,9 @@ tls-auth none
 <dh>
 `cat dh.pem`
 </dh>
+<ta>
+`cat key.pem`
+</ta>
 
 <connection>
 remote $MY_IP_ADDR 1194 udp
